@@ -1,8 +1,16 @@
 const STORAGE_KEY = "shopee-affiliate-upload-planner-v1";
+const PROFILE_KEY = "shopee-affiliate-profile-v1";
 
 const state = {
   items: [],
-  search: ""
+  search: "",
+  profile: {
+    username: "",
+    brand: "",
+    email: "",
+    niche: "",
+    template: ""
+  }
 };
 
 const els = {
@@ -13,6 +21,12 @@ const els = {
   addSample: document.querySelector("#addSample"),
   clearAll: document.querySelector("#clearAll"),
   exportCsv: document.querySelector("#exportCsv"),
+  saveProfile: document.querySelector("#saveProfile"),
+  profileUsername: document.querySelector("#profileUsername"),
+  profileBrand: document.querySelector("#profileBrand"),
+  profileEmail: document.querySelector("#profileEmail"),
+  profileNiche: document.querySelector("#profileNiche"),
+  profileTemplate: document.querySelector("#profileTemplate"),
   applyGenerator: document.querySelector("#applyGenerator"),
   captionStyle: document.querySelector("#captionStyle"),
   niche: document.querySelector("#niche"),
@@ -33,9 +47,33 @@ function save() {
   render();
 }
 
+function saveProfile() {
+  state.profile = {
+    username: els.profileUsername.value.trim(),
+    brand: els.profileBrand.value.trim(),
+    email: els.profileEmail.value.trim(),
+    niche: els.profileNiche.value.trim(),
+    template: els.profileTemplate.value.trim()
+  };
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(state.profile));
+  if (state.profile.niche) {
+    els.niche.value = state.profile.niche;
+  }
+}
+
 function load() {
   const raw = localStorage.getItem(STORAGE_KEY);
   state.items = raw ? JSON.parse(raw) : [];
+  const profileRaw = localStorage.getItem(PROFILE_KEY);
+  state.profile = profileRaw ? { ...state.profile, ...JSON.parse(profileRaw) } : state.profile;
+  els.profileUsername.value = state.profile.username || "";
+  els.profileBrand.value = state.profile.brand || "";
+  els.profileEmail.value = state.profile.email || "";
+  els.profileNiche.value = state.profile.niche || "";
+  els.profileTemplate.value = state.profile.template || "";
+  if (state.profile.niche) {
+    els.niche.value = state.profile.niche;
+  }
   render();
 }
 
@@ -85,11 +123,22 @@ function formatCurrency(value) {
 function buildCaption(item) {
   const title = item.title || "produk ini";
   const price = formatCurrency(item.price);
-  const niche = els.niche.value.trim() || "daily finds";
+  const niche = els.niche.value.trim() || state.profile.niche || "daily finds";
+  const brand = state.profile.brand || state.profile.username || "akun ini";
   const priceLine = price ? ` Harga sekitar ${price}.` : "";
+  const template = state.profile.template;
+
+  if (template) {
+    return template
+      .replaceAll("{title}", title)
+      .replaceAll("{price}", price || "cek harga terbaru")
+      .replaceAll("{niche}", niche)
+      .replaceAll("{brand}", brand)
+      .replaceAll("{link}", item.link || "link affiliate");
+  }
 
   if (els.captionStyle.value === "review") {
-    return `Aku masukin ${title} ke list ${niche} karena kelihatannya kepakai buat harian.${priceLine} Cek detail dan voucher lewat link affiliate ini.`;
+    return `Aku masukin ${title} ke list ${niche} dari ${brand} karena kelihatannya kepakai buat harian.${priceLine} Cek detail dan voucher lewat link affiliate ini.`;
   }
 
   if (els.captionStyle.value === "promo") {
@@ -171,6 +220,8 @@ function render() {
     node.querySelector(".copyUpload").addEventListener("click", async () => {
       const payload = [
         `Judul: ${item.title || "-"}`,
+        `Akun: ${state.profile.username || "-"}`,
+        `Brand: ${state.profile.brand || "-"}`,
         `Video: ${item.video || "-"}`,
         `Jadwal: ${item.schedule || "-"}`,
         "",
@@ -209,8 +260,11 @@ function updateStats() {
 }
 
 function exportCsv() {
-  const headers = ["title", "affiliate_link", "price", "category", "video_file", "schedule", "caption", "hashtags", "status"];
+  const headers = ["account_username", "brand", "contact_email", "title", "affiliate_link", "price", "category", "video_file", "schedule", "caption", "hashtags", "status"];
   const rows = state.items.map((item) => [
+    state.profile.username,
+    state.profile.brand,
+    state.profile.email,
     item.title,
     item.link,
     item.price,
@@ -266,6 +320,10 @@ els.clearAll.addEventListener("click", () => {
 });
 
 els.exportCsv.addEventListener("click", exportCsv);
+els.saveProfile.addEventListener("click", () => {
+  saveProfile();
+  render();
+});
 els.search.addEventListener("input", () => {
   state.search = els.search.value;
   render();
