@@ -1,3 +1,7 @@
 server.js
 *.log
 node_modules
+tools
+.gh-device.json
+.gh-token.txt
+*.zip
