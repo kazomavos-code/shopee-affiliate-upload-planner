@@ -121,6 +121,29 @@ https://shopee.co.id/produk-affiliate-kamu"></textarea>
           </div>
         </section>
 
+        <section class="panel upload-mode">
+          <div class="panel-head">
+            <div>
+              <h2>Mode upload</h2>
+              <p class="muted">Ambil item siap upload satu per satu, copy paket datanya, lalu upload manual di Shopee.</p>
+            </div>
+            <a class="button-link" href="https://affiliate.shopee.co.id/" target="_blank" rel="noopener">Buka Shopee</a>
+          </div>
+          <div class="upload-card">
+            <div>
+              <p class="eyebrow upload-eyebrow">Item aktif</p>
+              <h3 id="activeTitle">Belum ada item siap upload</h3>
+              <p id="activeMeta" class="muted">Generate caption dan isi video dulu, lalu klik item berikutnya.</p>
+            </div>
+            <div class="upload-actions">
+              <button id="nextUpload" type="button">Item berikutnya</button>
+              <button id="copyActiveUpload" class="ghost" type="button">Copy paket</button>
+              <button id="markUploaded" class="ghost" type="button">Tandai upload</button>
+            </div>
+          </div>
+          <textarea id="activePreview" readonly placeholder="Paket upload akan tampil di sini."></textarea>
+        </section>
+
         <section class="queue-head">
           <h2>Antrian upload</h2>
           <label class="search">
