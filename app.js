@@ -10,7 +10,8 @@ const state = {
     email: "",
     niche: "",
     template: ""
-  }
+  },
+  activeUploadId: ""
 };
 
 const els = {
@@ -32,6 +33,12 @@ const els = {
   niche: document.querySelector("#niche"),
   startTime: document.querySelector("#startTime"),
   interval: document.querySelector("#interval"),
+  nextUpload: document.querySelector("#nextUpload"),
+  copyActiveUpload: document.querySelector("#copyActiveUpload"),
+  markUploaded: document.querySelector("#markUploaded"),
+  activeTitle: document.querySelector("#activeTitle"),
+  activeMeta: document.querySelector("#activeMeta"),
+  activePreview: document.querySelector("#activePreview"),
   search: document.querySelector("#search"),
   totalItems: document.querySelector("#totalItems"),
   readyItems: document.querySelector("#readyItems"),
@@ -153,6 +160,50 @@ function buildHashtags(item) {
   return `#ShopeeAffiliate #ShopeeFinds #RacunShopee #${category}`;
 }
 
+function buildUploadPayload(item) {
+  if (!item) return "";
+  return [
+    `Judul: ${item.title || "-"}`,
+    `Akun: ${state.profile.username || "-"}`,
+    `Brand: ${state.profile.brand || "-"}`,
+    `Email kontak: ${state.profile.email || "-"}`,
+    `Video: ${item.video || "-"}`,
+    `Jadwal: ${item.schedule || "-"}`,
+    `Link affiliate: ${item.link || "-"}`,
+    "",
+    item.caption || "",
+    item.hashtags || ""
+  ].filter((line, index) => index < 8 || line).join("\n");
+}
+
+function getReadyItems() {
+  return state.items.filter((item) => item.status !== "Sudah Upload" && item.link && item.caption);
+}
+
+function setActiveUpload(item) {
+  state.activeUploadId = item ? item.id : "";
+  updateUploadMode();
+}
+
+function updateUploadMode() {
+  const active = state.items.find((item) => item.id === state.activeUploadId);
+
+  if (!active) {
+    els.activeTitle.textContent = "Belum ada item siap upload";
+    els.activeMeta.textContent = "Generate caption dan isi video dulu, lalu klik item berikutnya.";
+    els.activePreview.value = "";
+    return;
+  }
+
+  els.activeTitle.textContent = active.title || "Produk affiliate";
+  els.activeMeta.textContent = [
+    active.status || "Draft",
+    active.category || "Tanpa kategori",
+    active.schedule || "Belum ada jadwal"
+  ].join(" | ");
+  els.activePreview.value = buildUploadPayload(active);
+}
+
 function setSchedules() {
   const startValue = els.startTime.value;
   if (!startValue) return;
@@ -182,6 +233,7 @@ function updateItem(id, patch) {
 
 function render() {
   updateStats();
+  updateUploadMode();
   els.queue.innerHTML = "";
 
   const query = state.search.trim().toLowerCase();
@@ -218,18 +270,8 @@ function render() {
     });
 
     node.querySelector(".copyUpload").addEventListener("click", async () => {
-      const payload = [
-        `Judul: ${item.title || "-"}`,
-        `Akun: ${state.profile.username || "-"}`,
-        `Brand: ${state.profile.brand || "-"}`,
-        `Video: ${item.video || "-"}`,
-        `Jadwal: ${item.schedule || "-"}`,
-        "",
-        item.caption || "",
-        item.hashtags || "",
-        item.link || ""
-      ].filter((line, index) => index < 4 || line).join("\n");
-      await navigator.clipboard.writeText(payload);
+      await navigator.clipboard.writeText(buildUploadPayload(item));
+      setActiveUpload(item);
     });
 
     node.querySelector(".openLink").addEventListener("click", () => {
@@ -323,6 +365,30 @@ els.exportCsv.addEventListener("click", exportCsv);
 els.saveProfile.addEventListener("click", () => {
   saveProfile();
   render();
+});
+els.nextUpload.addEventListener("click", () => {
+  const ready = getReadyItems();
+  if (!ready.length) {
+    setActiveUpload(null);
+    return;
+  }
+
+  const currentIndex = ready.findIndex((item) => item.id === state.activeUploadId);
+  const next = ready[currentIndex + 1] || ready[0];
+  setActiveUpload(next);
+});
+els.copyActiveUpload.addEventListener("click", async () => {
+  const active = state.items.find((item) => item.id === state.activeUploadId);
+  if (!active) return;
+  await navigator.clipboard.writeText(buildUploadPayload(active));
+});
+els.markUploaded.addEventListener("click", () => {
+  const active = state.items.find((item) => item.id === state.activeUploadId);
+  if (!active) return;
+  active.status = "Sudah Upload";
+  const next = getReadyItems().find((item) => item.id !== active.id);
+  state.activeUploadId = next ? next.id : "";
+  save();
 });
 els.search.addEventListener("input", () => {
   state.search = els.search.value;
