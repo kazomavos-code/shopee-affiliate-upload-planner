@@ -200,6 +200,38 @@ h2 {
   min-height: 82px;
 }
 
+.upload-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.upload-card h3 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.upload-card p {
+  margin-bottom: 0;
+}
+
+.upload-eyebrow {
+  color: var(--accent-dark);
+}
+
+.upload-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+#activePreview {
+  min-height: 150px;
+}
+
 label {
   width: 100%;
   display: grid;
@@ -286,13 +318,16 @@ textarea:focus {
 
   .toolbar,
   .panel-head,
-  .queue-head {
+  .queue-head,
+  .upload-card {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .item-actions {
+  .item-actions,
+  .upload-actions {
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: flex-start;
   }
 }
