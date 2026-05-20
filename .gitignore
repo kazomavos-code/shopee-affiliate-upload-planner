@@ -1,3 +1,7 @@
 .vercel
 node_modules
 *.log
+tools
+.gh-device.json
+.gh-token.txt
+*.zip
