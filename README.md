@@ -13,6 +13,7 @@ Tool web lokal untuk menyiapkan antrian konten Shopee Affiliate.
 - Tombol buka portal resmi Shopee Affiliate Indonesia.
 - Tombol copy data upload per item.
 - Mode upload semi-otomatis: item berikutnya, copy paket upload, dan tandai sudah upload.
+- Macro AutoHotkey semi-otomatis untuk copy judul, caption, hashtag, link, dan nama video.
 - Profil akun aman: username, brand/toko, email kontak, niche, dan template caption.
 - Data tersimpan di browser memakai `localStorage`.
 
@@ -25,6 +26,12 @@ Tool web lokal untuk menyiapkan antrian konten Shopee Affiliate.
 5. Klik **Generate** untuk membuat caption, hashtag, dan jadwal.
 6. Pakai **Mode upload** untuk copy paket data, buka Shopee, lalu tandai item yang sudah upload.
 7. Klik **Export CSV** jika perlu arsip data.
+
+## Macro AutoHotkey
+
+Lihat `MACRO_UPLOAD_SEMI_OTOMATIS.md`. Macro tersedia di `macro-upload-shopee.ahk`.
+
+Macro ini membantu copy-paste data upload, tetapi tidak login otomatis, tidak menyimpan password/OTP/cookie, dan tidak klik submit/upload final.
 
 ## Deploy ke Vercel
 
