@@ -192,6 +192,14 @@ h2 {
   grid-template-columns: repeat(4, minmax(160px, 1fr));
 }
 
+.profile-controls {
+  margin-bottom: 12px;
+}
+
+.template-label textarea {
+  min-height: 82px;
+}
+
 label {
   width: 100%;
   display: grid;
