@@ -265,6 +265,13 @@ function render() {
     bindInput(node, ".hashtags", item, "hashtags");
     bindInput(node, ".status", item, "status");
 
+    node.querySelector(".videoFile").addEventListener("change", (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      updateItem(item.id, { video: `${file.name} (${formatFileSize(file.size)})` });
+      render();
+    });
+
     node.querySelector(".copyCaption").addEventListener("click", async () => {
       await navigator.clipboard.writeText([item.caption, item.hashtags, item.link].filter(Boolean).join("\n\n"));
     });
@@ -299,6 +306,14 @@ function updateStats() {
   els.totalItems.textContent = state.items.length;
   els.readyItems.textContent = ready;
   els.missingItems.textContent = missing;
+}
+
+function formatFileSize(bytes) {
+  if (!bytes) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  const value = bytes / Math.pow(1024, index);
+  return `${value.toFixed(value >= 10 || index === 0 ? 0 : 1)} ${units[index]}`;
 }
 
 function exportCsv() {
