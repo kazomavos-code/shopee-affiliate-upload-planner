@@ -7,6 +7,7 @@ Tool web lokal untuk menyiapkan antrian konten Shopee Affiliate.
 - Input banyak produk sekaligus dari link atau format `judul | link | harga | kategori`.
 - Generator caption, hashtag, dan jadwal upload.
 - Kolom file video untuk video milik sendiri.
+- Input pilih video lokal untuk mencatat nama dan ukuran file.
 - Status antrian: Draft, Siap Upload, Sudah Upload, Perlu Dicek.
 - Export CSV untuk workflow upload manual atau tool resmi lain.
 - Tombol buka portal resmi Shopee Affiliate Indonesia.
@@ -40,6 +41,8 @@ Lihat juga `DEPLOY_VERCEL.md` untuk setting singkatnya.
 ## Tentang scrape video
 
 Tool ini tidak otomatis scrape atau download video dari Shopee. Pakai video yang kamu rekam sendiri, dari brand yang memberi izin, atau aset yang memang legal untuk digunakan dalam promosi affiliate.
+
+Browser tidak mengizinkan website menyimpan path asli file video dari laptop. Karena itu tombol pilih video hanya mencatat nama dan ukuran file untuk antrian. Upload file video tetap dilakukan langsung di halaman Shopee saat kamu login manual.
 
 ## Tentang login Shopee
 
