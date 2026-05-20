@@ -60,6 +60,38 @@ https://shopee.co.id/produk-affiliate-kamu"></textarea>
         <section class="panel">
           <div class="panel-head">
             <div>
+              <h2>Profil akun</h2>
+              <p class="muted">Simpan data aman untuk caption dan export. Password, OTP, cookie, dan session tidak disimpan.</p>
+            </div>
+            <button id="saveProfile" type="button">Simpan profil</button>
+          </div>
+          <div class="controls profile-controls">
+            <label>
+              Username affiliate
+              <input id="profileUsername" placeholder="@username atau nama akun" />
+            </label>
+            <label>
+              Nama toko/brand
+              <input id="profileBrand" placeholder="Nama brand konten" />
+            </label>
+            <label>
+              Email kontak
+              <input id="profileEmail" type="email" placeholder="email kerja" />
+            </label>
+            <label>
+              Niche default
+              <input id="profileNiche" placeholder="fashion, rumah, gadget..." />
+            </label>
+          </div>
+          <label class="template-label">
+            Template caption opsional
+            <textarea id="profileTemplate" placeholder="Gunakan {title}, {price}, {niche}, {brand}, {link}. Contoh: {title} cocok buat list {niche}. Cek detailnya di link affiliate."></textarea>
+          </label>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
               <h2>Generator konten</h2>
               <p class="muted">Pilih gaya caption dan jam upload, lalu terapkan ke item yang belum punya caption.</p>
             </div>
