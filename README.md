@@ -11,6 +11,7 @@ Tool web lokal untuk menyiapkan antrian konten Shopee Affiliate.
 - Export CSV untuk workflow upload manual atau tool resmi lain.
 - Tombol buka portal resmi Shopee Affiliate Indonesia.
 - Tombol copy data upload per item.
+- Mode upload semi-otomatis: item berikutnya, copy paket upload, dan tandai sudah upload.
 - Profil akun aman: username, brand/toko, email kontak, niche, dan template caption.
 - Data tersimpan di browser memakai `localStorage`.
 
@@ -21,7 +22,8 @@ Tool web lokal untuk menyiapkan antrian konten Shopee Affiliate.
 3. Isi **Profil akun** jika ingin username/brand/niche masuk ke caption dan CSV.
 4. Isi path/nama file video yang kamu punya hak pakai.
 5. Klik **Generate** untuk membuat caption, hashtag, dan jadwal.
-6. Klik **Export CSV**.
+6. Pakai **Mode upload** untuk copy paket data, buka Shopee, lalu tandai item yang sudah upload.
+7. Klik **Export CSV** jika perlu arsip data.
 
 ## Deploy ke Vercel
 
